@@ -20,11 +20,12 @@ const W3ID_SEC_URL_V2 = 'https://w3id.org/security/v2';
 
 import W3C_VC_DATA_MODEL_V1 from './vc-v1.json';
 import W3C_VC_DATA_MODEL_EXAMPLES_V1 from './vc-example-v1.json';
+import JWS_V1 from './jws2020.json';
 
 const W3C_VC_DATA_MODEL_URL_V1 = 'https://www.w3.org/2018/credentials/v1';
 const W3C_VC_DATA_MODEL_EXAMPLES_URL_V1 =
   'https://www.w3.org/2018/credentials/examples/v1';
-
+const JWS_URL_V1 = 'https://w3id.org/security/jws/v1';
 
 async function generateDidKeyPair(): Promise<ed25519.Ed25519KeyPair> {
 
@@ -74,6 +75,7 @@ export async function generateAndProveDid(challenge: string): Promise<any> {
     .addContext({ [DID_CONTEXT_URL]: DidContext })
     .addContext({ [W3ID_SEC_URL_V1]: W3ID_SEC_V1 })
     .addContext({ [W3ID_SEC_URL_V2]: W3ID_SEC_V2 })
+    .addContext({ [JWS_URL_V1]: JWS_V1 })
     .addContext({ [W3C_VC_DATA_MODEL_URL_V1]: W3C_VC_DATA_MODEL_V1 })
     .addContext({
       [W3C_VC_DATA_MODEL_EXAMPLES_URL_V1]: W3C_VC_DATA_MODEL_EXAMPLES_V1,
@@ -85,7 +87,7 @@ export async function generateAndProveDid(challenge: string): Promise<any> {
 
   const presentation = createPresentation(keyPair.controller);
   console.log('presentation', JSON.stringify(presentation, null, 2));
-  presentation['@context'].push('https://w3id.org/did/v1');
+  //presentation['@context'].push('https://w3id.org/did/v1');
   const signedPresentation = await vc.ld.signPresentation({
     presentation: presentation,
     documentLoader: documentLoader,
